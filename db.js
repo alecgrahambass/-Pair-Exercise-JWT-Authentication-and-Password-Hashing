@@ -16,6 +16,7 @@ const User = conn.define('user', {
 });
 
 User.byToken = async function(token) {
+  console.log(token)
   try {
     const payload = await jwt.verify(token, process.env.JWT)
     console.log('what is the payload: ', payload.id)
@@ -43,12 +44,11 @@ User.authenticate = async({ username, password })=> {
       password
     }
   });
-  //const user = await dataValues
-  //console.log(user)
+
   if(user){
     //const id = user.id
     const token = await jwt.sign( {id: user.id}, process.env.JWT );
-    return {token}; 
+    return token; 
   }
   const error = Error('bad credentials3');
   error.status = 401;
